@@ -14,23 +14,29 @@
                            http://www.springframework.org/schema/tx
                            http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
 
-    <context:component-scan base-package="com.qhx.baobaotao"/>
+    <context:component-scan base-package="com.qhx.baobaotao.dao"/>
     <context:component-scan base-package="com.qhx.baobaotao.controller"/>
+    <context:component-scan base-package="com.qhx.baobaotao.domain"/>
+    <context:component-scan base-package="com.qhx.baobaotao.service"/>
+    
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
         destroy-method="close"
           p:driverClassName="com.mysql.jdbc.Driver"
           p:url="jdbc:mysql://localhost:3306/sampledb"
           p:username="root"
-          p:password="root"
-    />
+          p:password="root"/>
+          
     <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate"
-        p:dataSource-ref="dataSource"
-    />
+        p:dataSource-ref="dataSource"/>
 
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
-        p:dataSource-ref="dataSource"
-    />
+        p:dataSource-ref="dataSource"/>
     
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"
+	        p:viewClass="org.springframework.web.servlet.view.JstlView"
+	        p:prefix="/WEB-INF/jsp/"
+	        p:suffix=".jsp"/>
+	        
     <aop:config proxy-target-class="true">
         <aop:pointcut id="serviceMethod" expression="execution(* com.qhx.baobaotao.service..*(..))"/>
         <aop:advisor advice-ref="txAdvice" pointcut-ref="serviceMethod"/>
